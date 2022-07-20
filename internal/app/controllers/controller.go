@@ -33,11 +33,7 @@ func GetRoutes(controller Controller) *gin.Engine {
 	r := gin.Default()
 	//r.POST("/monitoring/token", controller.GetToken)
 	authRoutes := r.Group("/").Use(middleware.AuthMiddleware(controller.Repo))
-	authRoutes.POST("/monitoring/insights/:id", controller.GetEnvironmentInsights)
-	authRoutes.GET("/monitoring/podlist/:id", controller.GetPodList)
-	authRoutes.GET("/monitoring/containerlist/:id", controller.GetContainerList)
-	//authRoutes.GET("/monitoring/containermonitor/:id", controller.GetContainerMonitor)
-	authRoutes.GET("/monitoring/events/:id", controller.GetEvents)
-	authRoutes.POST("/monitoring/terminal", controller.GenerateToken)
+	authRoutes.GET("/monitoring/podlist/:id", controller.GetProductDetails)
+
 	return r
 }

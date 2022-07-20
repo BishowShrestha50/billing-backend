@@ -13,8 +13,8 @@ type Repository struct {
 func NewRepo(db *gorm.DB) models.ProductDetailsInterface {
 	return &Repository{DB: db}
 }
-func (r *Repository) GetByID(eid uint64) (*models.ProductDetails, error) {
-	data := models.ProductDetails{}
+func (r *Repository) CreateProductDetails(data models.ProductDetails) (*models.ProductDetails, error) {
+//	data := models.ProductDetails{}
 
 	return &data, nil
 }
