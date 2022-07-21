@@ -14,7 +14,9 @@ func NewRepo(db *gorm.DB) models.ProductDetailsInterface {
 	return &Repository{DB: db}
 }
 func (r *Repository) CreateProductDetails(data models.ProductDetails) (*models.ProductDetails, error) {
-//	data := models.ProductDetails{}
-
+	err := r.DB.Create(&data).Error
+	if err != nil {
+		return nil, err
+	}
 	return &data, nil
 }
