@@ -7,9 +7,11 @@ import (
 	"image/color"
 	"image/draw"
 	"io/ioutil"
-	"log"
+	"math/rand"
 	"mime/multipart"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/boombuler/barcode"
@@ -19,60 +21,20 @@ import (
 	"github.com/llgcode/draw2d/draw2dimg"
 )
 
-type Details struct {
-	Name      string
-	Category  string
-	CostPrice string
-	SellPrice string
-	Code      string
-}
-
-type M map[string]interface{}
-
-var data = []map[string]interface{}{
-	M{"Name": "Noval", "Category": "jeans", "CostPrice": "1200", "SellPrice": "1500", "Code": "123456"},
-	M{"Name": "Yasa", "Category": "shirt", "CostPrice": "1000", "SellPrice": "1500", "Code": "678901"},
-	M{"Name": "Nesa", "Category": "tshirt", "CostPrice": "1200", "SellPrice": "1800", "Code": "342122"},
-}
-
-func GetExcelProducts(fileName string) (*[]models.ProductDetails, error) {
-	// xlsx := excelize.NewFile()
-
-	// sheet1Name := "Sheet One"
-	// xlsx.SetSheetName(xlsx.GetSheetName(1), sheet1Name)
-	// xlsx.SetCellValue(sheet1Name, "A1", "Name")
-	// xlsx.SetCellValue(sheet1Name, "B1", "Category")
-	// xlsx.SetCellValue(sheet1Name, "C1", "CostPrice")
-	// xlsx.SetCellValue(sheet1Name, "D1", "SellPrice")
-	// xlsx.SetCellValue(sheet1Name, "E1", "Code")
-	// err := xlsx.AutoFilter(sheet1Name, "A1", "C1", "")
-	// if err != nil {
-	// 	log.Fatal("ERROR", err.Error())
-	// }
-	// for i, each := range data {
-	// 	xlsx.SetCellValue(sheet1Name, fmt.Sprintf("A%d", i+2), each["Name"])
-	// 	xlsx.SetCellValue(sheet1Name, fmt.Sprintf("B%d", i+2), each["Category"])
-	// 	xlsx.SetCellValue(sheet1Name, fmt.Sprintf("C%d", i+2), each["CostPrice"])
-	// 	xlsx.SetCellValue(sheet1Name, fmt.Sprintf("D%d", i+2), each["SellPrice"])
-	// 	xlsx.SetCellValue(sheet1Name, fmt.Sprintf("E%d", i+2), each["Code"])
-	// }
-	// err = xlsx.SaveAs("./file2.xlsx")
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	xlsx, err := excelize.OpenFile(fileName)
+func GetExcelProducts(file multipart.File) (*[]models.ProductDetails, error) {
+	xlsx, err := excelize.OpenReader(file)
 	if err != nil {
-		log.Fatal("ERROR", err.Error())
+		fmt.Println("errors", err)
 	}
 	sheet1Name := "Sheet One"
-	a := xlsx.GetSheetName(2)
+	a := xlsx.GetSheetName(1)
 	b := xlsx.GetRows(sheet1Name)
 	fmt.Println("a", a)
 	fmt.Println("b", b)
-	rows := make([]M, 0)
+	rows := make([]map[string]interface{}, 0)
 	details := make([]models.ProductDetails, 0)
 	for i := 2; i < 5; i++ {
-		row := M{
+		row := map[string]interface{}{
 			"Name":      xlsx.GetCellValue(sheet1Name, fmt.Sprintf("A%d", i)),
 			"Category":  xlsx.GetCellValue(sheet1Name, fmt.Sprintf("B%d", i)),
 			"CostPrice": xlsx.GetCellValue(sheet1Name, fmt.Sprintf("C%d", i)),
@@ -115,13 +77,13 @@ func StoreToFile(fileDetails multipart.File) {
 	tempFile.Write(fileBytes)
 }
 
-func GenerateBarCode(code, name string) {
+func GenerateBarCode(product models.ProductDetails) {
 
-	fmt.Println("Generating code128 barcode for : ", code)
-	bcodes, err := code128.Encode(code)
+	fmt.Println("Generating code128 barcode for : ", product.Code)
+	bcodes, err := code128.Encode(product.Code)
 
 	if err != nil {
-		fmt.Printf("String %s cannot be encoded", code)
+		fmt.Printf("String %s cannot be encoded", product.Code)
 		os.Exit(1)
 	}
 	//barcode.Scale(bcodes, 250, 40)
@@ -157,7 +119,7 @@ func GenerateBarCode(code, name string) {
 	gc.SetFillColor(image.Black)
 
 	gc.SetFontSize(14)
-	gc.FillStringAt(name, 50, 20)
+	gc.FillStringAt(product.Name, 50, 20)
 
 	// create a new blank image with white background
 	newImg := imaging.New(300, 150, color.NRGBA{255, 255, 255, 255})
@@ -177,4 +139,10 @@ func GenerateBarCode(code, name string) {
 
 	// everything ok
 	fmt.Println("Code128 code generated and saved to code128.png")
+}
+func RandInt() string {
+	rand.Seed(time.Now().UnixNano())
+	min, max := 100000000, 999999999
+	return strconv.Itoa(min + rand.Intn(max-min))
+	//return int64(min + rand.Intn(max-min))
 }
