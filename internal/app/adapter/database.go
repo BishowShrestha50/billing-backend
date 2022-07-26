@@ -1,31 +1,20 @@
 package adapter
 
 import (
+	"billing-backend/internal/app/models"
 	"fmt"
 	"os"
-	"time"
 
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-type BaseRepo struct {
-	DB *gorm.DB
-}
-
-func (base *BaseRepo) Initialize() error {
-	dsn := fmt.Sprintf("host=%v port=%s user=%v password=%v dbname=%s", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+func Initialize() (*gorm.DB, error) {
+	url := fmt.Sprintf("host=%v port=%s user=%v password=%v dbname=%s", os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
+	db, err := gorm.Open("postgres", url)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	sqlDB, err := db.DB()
-	if err != nil {
-		return err
-	}
-	sqlDB.SetMaxIdleConns(10)
-	sqlDB.SetMaxOpenConns(100)
-	sqlDB.SetConnMaxLifetime(time.Hour)
-	base.DB = db
-	return nil
+	db.AutoMigrate(&models.ProductDetails{}, &models.Invoice{}, &models.InvoiceItems{})
+	return db, nil
 }

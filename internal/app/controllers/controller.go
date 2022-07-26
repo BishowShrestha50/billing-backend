@@ -2,38 +2,37 @@ package controllers
 
 import (
 	"billing-backend/internal/app/adapter"
-	"billing-backend/internal/app/adapter/repository"
 	"billing-backend/internal/app/application/utils/middleware"
-	"billing-backend/internal/app/models"
 	"log"
 
 	"github.com/gin-gonic/gin"
-)
-
-var (
-	base = adapter.BaseRepo{}
+	"github.com/jinzhu/gorm"
 )
 
 type Controller struct {
-	Repo models.ProductDetailsInterface
+	DB *gorm.DB
 }
 
 // Router is routing settings
 func Router() *gin.Engine {
 	controller := Controller{}
-	err := base.Initialize()
-	db := repository.NewRepo(base.DB)
-	controller.Repo = db
+	db, err := adapter.Initialize()
 	if err != nil {
 		log.Panic("unable to pg connection :: ", err)
 	}
+	controller.DB = db
 	return GetRoutes(controller)
 }
 func GetRoutes(controller Controller) *gin.Engine {
 	r := gin.Default()
 	//r.POST("/monitoring/token", controller.GetToken)
-	authRoutes := r.Group("/").Use(middleware.AuthMiddleware(controller.Repo))
-	authRoutes.GET("/billing/products", controller.CreateProductDetails)
-
+	authRoutes := r.Group("/api").Use(middleware.AuthMiddleware())
+	authRoutes.POST("/billing/products", controller.CreateProductDetails)
+	authRoutes.GET("/billing/products", controller.GetFilterProducts)
+	authRoutes.POST("/billing/products-excel", controller.CreateProductsExcel)
+	authRoutes.POST("/billing/barcode", controller.GenerateBarCode)
+	authRoutes.POST("/billing/barcodes", controller.GenerateMultipleBarCode)
+	authRoutes.POST("/billing/invoice", controller.CreateInvoice)
+	authRoutes.GET("/billing/invoice", controller.GetAllInvoice)
 	return r
 }

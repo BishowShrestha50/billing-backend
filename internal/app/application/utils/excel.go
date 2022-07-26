@@ -39,15 +39,18 @@ func GetExcelProducts(file multipart.File) (*[]models.ProductDetails, error) {
 			"Category":  xlsx.GetCellValue(sheet1Name, fmt.Sprintf("B%d", i)),
 			"CostPrice": xlsx.GetCellValue(sheet1Name, fmt.Sprintf("C%d", i)),
 			"SellPrice": xlsx.GetCellValue(sheet1Name, fmt.Sprintf("D%d", i)),
-			"Code":      xlsx.GetCellValue(sheet1Name, fmt.Sprintf("E%d", i)),
+			"Quantity":  xlsx.GetCellValue(sheet1Name, fmt.Sprintf("E%d", i)),
 		}
 		rows = append(rows, row)
+		costPrice, _ := strconv.ParseUint(xlsx.GetCellValue(sheet1Name, fmt.Sprintf("C%d", i)), 10, 32)
+		sellPrice, _ := strconv.ParseUint(xlsx.GetCellValue(sheet1Name, fmt.Sprintf("D%d", i)), 10, 32)
+		quantity, _ := strconv.ParseUint(xlsx.GetCellValue(sheet1Name, fmt.Sprintf("E%d", i)), 10, 32)
 		detail := models.ProductDetails{
 			Name:      xlsx.GetCellValue(sheet1Name, fmt.Sprintf("A%d", i)),
 			Category:  xlsx.GetCellValue(sheet1Name, fmt.Sprintf("B%d", i)),
-			CostPrice: xlsx.GetCellValue(sheet1Name, fmt.Sprintf("C%d", i)),
-			SellPrice: xlsx.GetCellValue(sheet1Name, fmt.Sprintf("D%d", i)),
-			Code:      xlsx.GetCellValue(sheet1Name, fmt.Sprintf("E%d", i)),
+			CostPrice: uint(costPrice),
+			SellPrice: uint(sellPrice),
+			Quantity:  uint(quantity),
 		}
 		details = append(details, detail)
 	}
