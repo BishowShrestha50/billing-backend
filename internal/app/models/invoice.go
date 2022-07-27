@@ -23,4 +23,5 @@ type InvoiceInterface interface {
 	CreateInvoice(db *gorm.DB, data Invoice) (*Invoice, error)
 	GetAllInvoice(db *gorm.DB) (*[]Invoice, error)
 	GetByInvoiceInvoiceItems(db *gorm.DB, id uint) (*[]InvoiceItems, error)
+	GetInvoiceByID(db *gorm.DB, id uint) (*Invoice, error)
 }

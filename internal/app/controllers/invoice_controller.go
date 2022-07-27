@@ -3,8 +3,12 @@ package controllers
 import (
 	"billing-backend/internal/app/adapter/repository"
 	"billing-backend/internal/app/models"
+	"bufio"
+	"bytes"
 	"fmt"
+	"html/template"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -46,4 +50,48 @@ func (ctrl Controller) GetInvoiceItems(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"data": data})
 	c.JSON(http.StatusOK, "pass")
+}
+
+func (ctrl Controller) GenerateInvoice(c *gin.Context) {
+	fmt.Println("sdfdf")
+	id := c.Param("id")
+	fmt.Println("sss", id)
+	invoiceID, _ := strconv.ParseUint(id, 10, 32)
+	data, err := invoiceInterface.GetInvoiceByID(ctrl.DB, uint(invoiceID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err)
+	}
+	templateData := struct {
+		InvoiceID    uint
+		CreatedDate  string
+		Total        float64
+		SubTotal     float64
+		Tax          uint
+		Discount     uint
+		InvoiceItems []models.InvoiceItems
+	}{
+		InvoiceID:    data.ID,
+		CreatedDate:  data.CreatedAt.String(),
+		Total:        data.SubTotal,
+		SubTotal:     data.SubTotal,
+		Tax:          data.Tax,
+		Discount:     data.Discount,
+		InvoiceItems: data.InvoiceItems,
+	}
+	t, err := template.ParseFiles("./design/index.html")
+	if err != nil {
+		logrus.Error("tmp-err", err)
+	}
+	buf := new(bytes.Buffer)
+	if err = t.Execute(buf, templateData); err != nil {
+		logrus.Error("err", err)
+	}
+	//r.body = buf.String()
+	f, err := os.Create("./output/index.html")
+	if err != nil {
+		logrus.Error("eee", err)
+	}
+	w := bufio.NewWriter(f)
+	w.WriteString(string(buf.String()))
+	w.Flush()
 }

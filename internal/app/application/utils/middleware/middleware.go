@@ -4,12 +4,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"billing-backend/internal/app/models"
-
 	"github.com/gin-gonic/gin"
 )
 
-func AuthMiddleware(r models.ProductDetailsInterface) gin.HandlerFunc {
+func AuthMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id := ctx.GetHeader("x-user-id")
 		if id == "" {

@@ -36,3 +36,12 @@ func (r *Invoice) GetByInvoiceInvoiceItems(db *gorm.DB, id uint) (*[]models.Invo
 	}
 	return &data, nil
 }
+
+func (r *Invoice) GetInvoiceByID(db *gorm.DB, id uint) (*models.Invoice, error) {
+	data := models.Invoice{}
+	err := db.Model(&models.Invoice{}).Preload("InvoiceItems").Where("id = ?", id).Find(&data).Error
+	if err != nil {
+		return nil, err
+	}
+	return &data, nil
+}

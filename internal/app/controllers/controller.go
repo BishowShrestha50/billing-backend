@@ -34,5 +34,6 @@ func GetRoutes(controller Controller) *gin.Engine {
 	authRoutes.POST("/billing/barcodes", controller.GenerateMultipleBarCode)
 	authRoutes.POST("/billing/invoice", controller.CreateInvoice)
 	authRoutes.GET("/billing/invoice", controller.GetAllInvoice)
+	authRoutes.POST("/billing/generate-invoice/:id", controller.GenerateInvoice)
 	return r
 }
