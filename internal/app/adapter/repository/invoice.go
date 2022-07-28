@@ -21,7 +21,7 @@ func (r *Invoice) CreateInvoice(db *gorm.DB, data models.Invoice) (*models.Invoi
 }
 func (r *Invoice) GetAllInvoice(db *gorm.DB) (*[]models.Invoice, error) {
 	data := []models.Invoice{}
-	err := db.Model(&models.Invoice{}).Find(&data).Error
+	err := db.Model(&models.Invoice{}).Preload("InvoiceItems").Find(&data).Error
 	if err != nil {
 		return nil, err
 	}

@@ -9,6 +9,9 @@
             background-color: #F6F6F6; 
             margin: 0;
             padding: 0;
+            font-family: 'Quattrocento Sans', sans-serif;
+       
+      font-size: 20px;
         }
         h1,h2,h3,h4,h5,h6{
             margin: 0;
@@ -24,8 +27,8 @@
             margin-left: auto;
         }
         .brand-section{
-           background-color: #0d1033;
-           padding: 10px 40px;
+            
+           text-align: center;
         }
         .logo{
             width: 50%;
@@ -47,25 +50,26 @@
             text-align: right;
         }
         .body-section{
-            padding: 16px;
-            border: 1px solid gray;
+             padding: 1px; 
+             
         }
         .heading{
-            font-size: 20px;
-            margin-bottom: 08px;
+             
+            margin-bottom: 50px;
+            text-align: center;
         }
         .sub-heading{
             color: #262626;
             margin-bottom: 05px;
         }
         table{
-            background-color: #fff;
+             
             width: 100%;
             border-collapse: collapse;
         }
         table thead tr{
-            border: 1px solid #111;
-            background-color: #f2f2f2;
+             
+             
         }
         table td {
             vertical-align: middle !important;
@@ -76,10 +80,10 @@
             padding-bottom: 08px;
         }
         .table-bordered{
-            box-shadow: 0px 0px 5px 0.5px gray;
+             
         }
         .table-bordered td, .table-bordered th {
-            border: 1px solid #dee2e6;
+             
         }
         .text-right{
             text-align: end;
@@ -96,67 +100,73 @@
 
     <div class="container">
         <div class="brand-section">
-            <div class="row">
-                <div class="col-6">
-                    <h1 class="text-white">FABCART</h1>
-                </div>
-                <div class="col-6">
-                    <div class="company-details">
-                        <p class="text-white">assdad asd  asda asdad a sd</p>
-                        <p class="text-white">assdad asd asd</p>
-                        <p class="text-white">+91 888555XXXX</p>
-                    </div>
-                </div>
-            </div>
+                    <h2>Saptasoch Technology</h2>
+                    <p >Kathmandu,Nepal</p>
+                    <p>PAN NO: 567788</p>
         </div>
 
         <div class="body-section">
-            <div class="row">
+            <p class="heading">TAX INVOICE</p>
                 <div class="col-6">
-                    <h2 class="heading">Invoice No.: 001</h2>
-                    <p class="sub-heading">Tracking No. fabcart2025 </p>
-                    <p class="sub-heading">Order Date: 20-20-2021 </p>
-                    <p class="sub-heading">Email Address: customer@gfmail.com </p>
+                    <p class="sub-heading">Invoice No :4</p>
+                    <p class="sub-heading">Transaction Date:2022-07-28 07:57:26.622098 &#43;0545 &#43;0545  </p>
+                    <p class="sub-heading">Invoice Date: 2022-07-28 07:57:26.622098 &#43;0545 &#43;0545 </p>
+                    <p class="sub-heading">Payment Mode: Cash </p>
+                    <p class="sub-heading">Phone Number: 999999 </p>
                 </div>
-                <div class="col-6">
-                    <p class="sub-heading">Full Name:1  </p>
-                    <p class="sub-heading">Address: 1900 </p>
-                    <p class="sub-heading">Phone Number:  </p>
-                    <p class="sub-heading">City,State,Pincode:  </p>
-                </div>
-            </div>
         </div>
 
         <div class="body-section">
-            <h3 class="heading">Ordered Items</h3>
             <br>
             <table class="table-bordered">
                 <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th class="w-20">Price</th>
-                        <th class="w-20">Quantity</th>
-                        <th class="w-20">Grandtotal</th>
+                    <th>Item</th>
+                        <th class="w-20">Qty</th>
+                        <th class="w-20">Rate</th>
+                        <th class="w-20">Amount</th>
                     </tr>
                 </thead>
                 <tbody>
+                    
                     <tr>
-                        <td>Product Name</td>
-                        <td>10</td>
-                        <td>1</td>
-                        <td>10</td>
+                        <td>ajeans</td>
+                        <td>2</td>
+                        <td>1000</td>
+                        <td>2000</td>
                     </tr>
+                    
+                    <tr>
+                        <td>t-shirt</td>
+                        <td>2</td>
+                        <td>950</td>
+                        <td>1900</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>halfjeans</td>
+                        <td>2</td>
+                        <td>1000</td>
+                        <td>2000</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>t-shirt</td>
+                        <td>2</td>
+                        <td>950</td>
+                        <td>1900</td>
+                    </tr>
+                    
                     <tr>
                         <td colspan="3" class="text-right">Sub Total</td>
-                        <td> 10.XX</td>
+                        <td> 7900</td>
                     </tr>
                     <tr>
-                        <td colspan="3" class="text-right">Tax Total %1X</td>
-                        <td> 2</td>
+                        <td colspan="3" class="text-right">Tax</td>
+                        <td>100</td>
                     </tr>
                     <tr>
                         <td colspan="3" class="text-right">Grand Total</td>
-                        <td> 12.XX</td>
+                        <td>7900</td>
                     </tr>
                 </tbody>
             </table>

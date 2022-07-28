@@ -35,5 +35,7 @@ func GetRoutes(controller Controller) *gin.Engine {
 	authRoutes.POST("/billing/invoice", controller.CreateInvoice)
 	authRoutes.GET("/billing/invoice", controller.GetAllInvoice)
 	authRoutes.POST("/billing/generate-invoice/:id", controller.GenerateInvoice)
+	//authRoutes.POST("/billing/shop", controller.CreateShop)
+	//authRoutes.POST("/billing/shop", controller.GetShop)
 	return r
 }
