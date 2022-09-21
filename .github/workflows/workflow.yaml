@@ -16,7 +16,7 @@ jobs:
   # The "build" workflow
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -41,7 +41,7 @@ jobs:
   # The "deploy" workflow
   deploy:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [build] # Only run this workflow when "build" workflow succeeds
     if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }} # Only run this workflow if it is master branch on push event
     steps:
@@ -53,5 +53,10 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: 9861194083/billing-api
-        tag_with_ref: true        
+        repository: 9861194083/billing-api:v2
+        tag_with_ref: true     
+    #Update Kubernets pod
+    - name: Update Kubernets pod
+      uses: actions-hub/kubectl@master   
+      with:
+        args: set image deployment/billing billing=9861194083/billing-api:v2 -n stateful-postgres 
