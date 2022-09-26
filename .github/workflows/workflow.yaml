@@ -34,7 +34,9 @@ jobs:
       run: |
         go version
         go get -u golang.org/x/lint/golint
-
+# Run mod of the application
+    - name: Run mod
+      run: go mod tidy 
     # Run build of the application
     - name: Run build
       run: go build . 
@@ -53,10 +55,10 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: 9861194083/billing-api:v2
-        tag_with_ref: true     
+        repository: 9861194083/billing-api
+        tags: latest  
     #Update Kubernets pod
     - name: Update Kubernets pod
       uses: actions-hub/kubectl@master   
       with:
-        args: set image deployment/billing billing=9861194083/billing-api:v2 -n stateful-postgres 
+        args: set image deployment/billing billing=9861194083/billing-api:latest -n stateful-postgres 
