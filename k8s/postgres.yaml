@@ -18,7 +18,6 @@ spec:
       - name: postgresql-db
         image: postgres:latest
         env:
-        - name: 
         - name: POSTGRES_PASSWORD
           value: testpassword
         - name: PGDATA
