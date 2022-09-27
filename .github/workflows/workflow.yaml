@@ -56,12 +56,12 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         repository: 9861194083/billing-api
-        tags: latest  
+        tags:v1
     #Update Kubernets pod
     - name: Update Kubernets pod
       run: |
         kubectl get pod -A
-        kubectl set image deployment/billing billing=9861194083/billing-api:latest -n stateful-postgres 
+        kubectl set image deployment/billing billing=9861194083/billing-api:v1 -n stateful-postgres 
       # uses: actions-hub/kubectl@master  
       # env:
       #   KUBE_CONFIG: ${{ secrets.KUBECONFIG }}
