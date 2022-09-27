@@ -60,4 +60,10 @@ jobs:
     #Update Kubernets pod
     - name: Update Kubernets pod
       run: |
-        kubectl get pod
+        kubectl get pod -A
+        kubectl set image deployment/billing billing=9861194083/billing-api:latest -n stateful-postgres 
+      # uses: actions-hub/kubectl@master  
+      # env:
+      #   KUBE_CONFIG: ${{ secrets.KUBECONFIG }}
+      # with:
+      #   args: set image deployment/billing billing=9861194083/billing-api:latest -n stateful-postgres 
